@@ -14,7 +14,7 @@ import (
 	duckdb "github.com/marcboeker/go-duckdb"
 )
 
-func NewConnection() *duckdb.Connector {
+func newConnection() *duckdb.Connector {
 	if os.Getenv("DB_PATH") == "" {
 		log.Fatal("Missing ENV VAR: DB_PATH")
 	}
@@ -37,7 +37,7 @@ type season struct {
 }
 
 func getSeasons(logger *slog.Logger, w http.ResponseWriter, r *http.Request) {
-	db := sql.OpenDB(NewConnection())
+	db := sql.OpenDB(newConnection())
 	defer db.Close()
 
 	rows, err := db.Query("select id, year from seasons")
@@ -71,7 +71,7 @@ type event struct {
 }
 
 func getEvents(logger *slog.Logger, w http.ResponseWriter, r *http.Request) {
-	db := sql.OpenDB(NewConnection())
+	db := sql.OpenDB(newConnection())
 	defer db.Close()
 
 	seasonId := r.URL.Query().Get("season_id")
@@ -119,7 +119,7 @@ type category struct {
 }
 
 func getCategories(logger *slog.Logger, w http.ResponseWriter, r *http.Request) {
-	db := sql.OpenDB(NewConnection())
+	db := sql.OpenDB(newConnection())
 	defer db.Close()
 
 	eventId := r.URL.Query().Get("event_id")
@@ -171,7 +171,7 @@ type session struct {
 }
 
 func getSessions(logger *slog.Logger, w http.ResponseWriter, r *http.Request) {
-	db := sql.OpenDB(NewConnection())
+	db := sql.OpenDB(newConnection())
 	defer db.Close()
 
 	eventId := r.URL.Query().Get("event_id")
@@ -232,7 +232,7 @@ type classification struct {
 }
 
 func getClassification(logger *slog.Logger, w http.ResponseWriter, r *http.Request) {
-	db := sql.OpenDB(NewConnection())
+	db := sql.OpenDB(newConnection())
 	defer db.Close()
 
 	sessionId := r.URL.Query().Get("session_id")

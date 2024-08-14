@@ -2,3 +2,7 @@
 **/data-lake/**
 **/logs/**
 *.log
+
+**/dbt/bin
+**/dbt/lib
+**/dbt/lib64

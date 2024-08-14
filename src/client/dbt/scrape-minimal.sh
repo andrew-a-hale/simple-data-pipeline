@@ -114,45 +114,5 @@ get_seasons | jq -r '"\(.id)"' \
 | parallel --colsep ' ' get_sessions | jq -r '"\(.season_id) \(.event_id) \(.category_id) \(.id)"' \
 | parallel --colsep ' ' get_classification
 
-# SILVER
-duckdb -s "COPY (SELECT * FROM read_csv('$BRONZE/seasons/**/*.csv', filename = true)) TO '$SILVER/seasons.parquet'"
-duckdb -s "COPY (SELECT * FROM read_csv('$BRONZE/events/**/*.csv', filename = true)) TO '$SILVER/events.parquet'"
-duckdb -s "COPY (SELECT * FROM read_csv('$BRONZE/categories/**/*.csv', filename = true)) TO '$SILVER/categories.parquet'"
-duckdb -s "COPY (SELECT * FROM read_csv('$BRONZE/sessions/**/*.csv', filename = true)) TO '$SILVER/sessions.parquet'"
-
-schema="\
-{
-    'season_id': 'VARCHAR',
-    'event_id': 'VARCHAR',
-    'category_id': 'VARCHAR',
-    'session_id': 'VARCHAR',
-    'name': 'VARCHAR',
-    'number': 'INTEGER',
-    'position': 'INTEGER',
-    'points': 'INTEGER'
-}"
-duckdb -s "COPY (SELECT * FROM read_csv('$BRONZE/classifications/**/*.csv', nullstr='null', columns=$schema, filename = true)) TO '$SILVER/classifications.parquet'"
-
-# GOLD
-duckdb -s "\
-COPY (
-    SELECT
-        seasons.year,
-        events.name AS event_name,
-        events.sname AS event_short_name,
-        categories.name AS category,
-        sessions.name AS session,
-        classification.name AS rider_name,
-        classification.number AS rider_number,
-        classification.position,
-        classification.points
-    FROM read_parquet('$SILVER/classifications.parquet') AS classification
-    LEFT JOIN read_parquet('$SILVER/seasons.parquet') AS seasons ON seasons.id = classification.season_id
-    LEFT JOIN read_parquet('$SILVER/events.parquet') AS events ON events.id = classification.event_id
-    LEFT JOIN read_parquet('$SILVER/categories.parquet') AS categories
-    ON categories.id = classification.category_id AND categories.event_id = classification.event_id
-    LEFT JOIN read_parquet('$SILVER/sessions.parquet') AS sessions ON sessions.id = classification.session_id
-) TO '$GOLD/mgp.parquet';"
-
 # END
 printf "COMPLETED\n"

@@ -1,0 +1,16 @@
+version: 2
+
+models:
+  - name: seasons
+    description: Seasons
+    columns:
+      - name: year
+        description: Integer between 1949 and current year.
+  - name: events
+    description: events
+  - name: categories
+    description: categories
+  - name: sessions
+    description: sessions
+  - name: classification
+    description: classification

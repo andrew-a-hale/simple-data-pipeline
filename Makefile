@@ -1,4 +1,5 @@
 PORT?=8888
+DATA_LAKE_DIR?=../data-lake
 
 default:
 	./src/server/seed.sh
@@ -24,3 +25,9 @@ bash-full:
 
 bash-inc:
 	./src/client/bash/scrape.sh 1000
+
+dbt:
+	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt build 
+
+dbt-docs:
+	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt docs generate && dbt docs serve

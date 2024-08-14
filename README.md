@@ -27,6 +27,17 @@ parquet format.
 Here is the data pipeline scripts that make use of the server. Currently there
 is only a Bash script, however there may be more in the future...
 
+Here is a table of the implemented features in each:
+
+| Feature | Bash Transform | Bash Full | Bash Minimal + dbt |
+|---------|:------------:|:----:|:---:|
+| Multicore | x | x | x |
+| Logging | | x | |
+| Metrics | | x | |
+| Data Quality | | x | x |
+| Incremental | | x | |
+| Stateful | | x | |
+
 ### Bash
 
 The client has 3 main parts:
@@ -50,17 +61,11 @@ The key ideas are:
 - Simple logging, metrics, and data quality
 - Incremental Data Pipeline
 
-There are multiple versions of the Bash script, so here is a table of the
-implemented features in each:
+In the Bash Minimal script State, Logging, Metrics and Data Quality are removed.
 
-| Feature | Bash Minimal | Bash |
-|---------|:------------:|:----:|
-| Multicore | x | x |
-| Logging | | x |
-| Metrics | | x |
-| Data Quality | | x |
-| Incremental | | x |
-| Stateful | | x |
+### dbt
+
+Placeholder
 
 #### Data Storage
 

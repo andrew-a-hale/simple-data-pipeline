@@ -1,0 +1,21 @@
+name: mgp
+
+config-version: 2
+version: '0.0.1'
+
+profile: dev
+
+model-paths: ["models"]
+test-paths: ["tests"]
+
+target-path: "target"
+clean-targets: 
+  - target
+  - dbt_packages
+  - logs
+
+models:
+  mgp:
+    materialized: view
+    gold:
+      materialized: table

@@ -6,3 +6,4 @@
 **/dbt/bin
 **/dbt/lib
 **/dbt/lib64
+**/dbt/target

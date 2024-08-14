@@ -1,3 +1,5 @@
+{{ config(location=env_var('DATA_LAKE_DIR') ~ '/silver/classifications.parquet') }}
+
 select 
     season_id
     , event_id
@@ -7,4 +9,4 @@ select
     , number
     , pos as position
     , pts as points
-from read_csv('{{ var('RAW_CLASSIFICATIONS') }}', filename = true, nullstr = 'null')
+from {{ source('bronze', 'classifications') }}

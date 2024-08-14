@@ -1,3 +1,5 @@
+{{ config(location=env_var('DATA_LAKE_DIR') ~ '/gold/mgp.parquet') }}
+
 SELECT
     seasons.year,
     events.name AS event_name,

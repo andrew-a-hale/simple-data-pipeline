@@ -1,2 +1,4 @@
+{{ config(location=env_var('DATA_LAKE_DIR') ~ '/silver/categories.parquet') }}
+
 select *
-from read_csv('{{ var('RAW_CATEGORIES') }}', filename = true)
+from {{ source('bronze', 'categories') }}

@@ -1,2 +1,4 @@
+{{ config(location=env_var('DATA_LAKE_DIR') ~ '/silver/events.parquet') }}
+
 select *
-from read_csv('{{ var('RAW_EVENTS') }}', filename = true)
+from {{ source('bronze', 'events') }}

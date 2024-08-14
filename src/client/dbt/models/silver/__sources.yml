@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: bronze
+    meta:
+      external_location: "{{ env_var('DATA_LAKE_DIR') }}/bronze/{name}/**/*.csv"
+    tables:
+      - name: seasons
+        columns:
+          - name: year
+            data_tests:
+              - not_null
+              - unique
+      - name: events
+      - name: categories
+      - name: sessions
+      - name: classifications
+        config:
+          external_location: "read_csv('{{ env_var('DATA_LAKE_DIR') }}/bronze/classifications/**/*.csv', nullstr='null')"

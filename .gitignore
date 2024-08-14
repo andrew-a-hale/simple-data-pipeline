@@ -7,4 +7,4 @@
 **/dbt/lib
 **/dbt/lib64
 **/dbt/target
-**/dbt/pyenv.cfg
+**/dbt/pyvenv.cfg

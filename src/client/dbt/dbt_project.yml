@@ -3,6 +3,14 @@ name: mgp
 config-version: 2
 version: '0.0.1'
 
+vars:
+  BRONZE: "{{ env_var('DATA_LAKE_DIR') }}/bronze"
+  RAW_SEASONS: "{{ var('BRONZE') }}/seasons/*.csv"
+  RAW_EVENTS: "{{ var('BRONZE') }}/events/**/*.csv"
+  RAW_CATEGORIES: "{{ var('BRONZE') }}/categories/**/*.csv"
+  RAW_SESSIONS: "{{ var('BRONZE') }}/sessions/**/*.csv"
+  RAW_CLASSIFICATIONS: "{{ var('BRONZE') }}/classifications/**/*.csv"
+
 profile: dev
 
 model-paths: ["models"]

@@ -6,7 +6,7 @@
 - Should I do a certification or a project?
   - Is Data Engineering fun?
   - For Employability?
-- Fun
+- What is fun?
 
 ## Post
 

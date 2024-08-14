@@ -6,6 +6,7 @@ default:
 	./src/server/kill-ws.sh $(PORT) > /dev/null || true
 	DB_PATH=data.db PORT=$(PORT) go run -C ./src/server/ router.go &
 	./src/client/bash/scrape-minimal.sh
+	./src/server/kill-ws.sh $(PORT) > /dev/null || true
 
 seed:
 	./src/server/seed.sh

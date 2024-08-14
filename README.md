@@ -24,8 +24,7 @@ parquet format.
 
 ## Client
 
-Here is the data pipeline scripts that make use of the server. Currently there
-is only a Bash script, however there may be more in the future...
+Here is the data pipeline scripts that make use of the server live.
 
 Here is a table of the implemented features in each:
 
@@ -61,7 +60,7 @@ The key ideas are:
 - Simple logging, metrics, and data quality
 - Incremental Data Pipeline
 
-In the Bash Minimal script State, Logging, Metrics and Data Quality are removed.
+In the Bash Transform script State, Logging, Metrics and Data Quality are removed.
 
 ### dbt
 
@@ -73,14 +72,5 @@ The data is stored as files intended for cheap blob storage and massively
 parallel compute, instead of highly optimised file formats with index
 maintenance.[^1]
 
-#### Sidenote
-
-The code is not written in a way to make this clear because brevity and
-performance was the goal here. Some people may have reservations about using
-this code, but I think the interesting part is simplicity over performance
-trade-off here is difficult to beat. Writing this type of pipeline in another
-programming language following styles and conventions is not a simple task.
-
 [^1]: In recent years there has been a move to separate the databases into 3
-separate components; Storage, Compute, and Catalog. In this case the Compute is
-`duckdb`, Storage format are parquet and json, and Catalog is excluded.
+separate components; Storage, Compute, and Catalog.

@@ -1,16 +1,16 @@
 version: 2
 
 models:
-  - name: seasons
+  - name: stg_mgp__seasons
     description: Seasons
     columns:
       - name: year
         description: Integer between 1949 and current year.
-  - name: events
+  - name: stg_mgp__events
     description: events
-  - name: categories
+  - name: stg_mgp__categories
     description: categories
-  - name: sessions
+  - name: stg_mgp__sessions
     description: sessions
-  - name: classification
+  - name: stg_mgp__classification
     description: classification

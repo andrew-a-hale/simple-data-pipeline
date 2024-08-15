@@ -10,9 +10,9 @@ SELECT
     classification.number AS rider_number,
     classification.position,
     classification.points
-FROM {{ ref('classification') }} AS classification
-LEFT JOIN {{ ref('seasons') }} AS seasons ON seasons.id = classification.season_id
-LEFT JOIN {{ ref('events') }}AS events ON events.id = classification.event_id
-LEFT JOIN {{ ref('categories') }} AS categories
+FROM {{ ref('stg_mgp__classification') }} AS classification
+LEFT JOIN {{ ref('stg_mgp__seasons') }} AS seasons ON seasons.id = classification.season_id
+LEFT JOIN {{ ref('stg_mgp__events') }}AS events ON events.id = classification.event_id
+LEFT JOIN {{ ref('stg_mgp__categories') }} AS categories
 ON categories.id = classification.category_id AND categories.event_id = classification.event_id
-LEFT JOIN {{ ref('sessions') }} AS sessions ON sessions.id = classification.session_id
+LEFT JOIN {{ ref('stg_mgp__sessions') }} AS sessions ON sessions.id = classification.session_id

@@ -19,7 +19,5 @@ clean-targets:
 
 models:
   mgp:
-    gold:
-      materialized: external
-    silver:
-      materialized: external
+    materialized: external
+

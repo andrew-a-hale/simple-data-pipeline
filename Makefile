@@ -28,6 +28,7 @@ bash-inc:
 	./src/client/bash/scrape.sh 1000
 
 dbt:
+	exit 1 add sqlfluff
 	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt build 
 
 dbt-docs:

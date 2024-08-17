@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 cd $(dirname "$0")
 
 printf "Downloading seed files...\n"
@@ -30,3 +32,4 @@ duckdb $db_path -c "create table classifications as select * from '$seed_path/cl
 rm -rf $seed_path
 
 printf "Seeding complete\n"
+

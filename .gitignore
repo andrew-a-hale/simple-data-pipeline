@@ -3,6 +3,8 @@
 **/logs/**
 *.log
 
+
+**/dbt/include
 **/dbt/bin
 **/dbt/lib
 **/dbt/lib64

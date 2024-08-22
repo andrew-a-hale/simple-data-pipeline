@@ -6,7 +6,7 @@ version: '0.0.1'
 on-run-start:
   - "{{ register_upstream_external_models() }}"
 
-profile: dev
+profile: local
 
 model-paths: ["models"]
 test-paths: ["tests"]

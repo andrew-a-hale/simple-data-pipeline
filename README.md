@@ -9,8 +9,9 @@ locally as possible but with a clear division between server and client.
 1. Install `duckdb`
 2. Install `go`
 3. Run `make [PORT=<port>]`
-    - if port is missing defaults to 8888.
+    - If port is missing defaults to 8888.
     - To test if the webserver is up use: `curl "localhost:8888/"` in another terminal.
+    - If you want to run the dbt variant you will need to install `dbt` and `dbt-duckdb`
 4. Run `make kill-ws` to kill background webserver kill you are done
 
 There are a few other commands in the Makefile to simplify testing.
@@ -31,11 +32,13 @@ Here is a table of the implemented features in each:
 | Feature | Bash Transform | Bash Full | Bash Minimal + dbt |
 |---------|:------------:|:----:|:---:|
 | Multicore | x | x | x |
-| Logging | | x | |
+| Logging | | x | x |
 | Metrics | | x | |
 | Data Quality | | x | x |
 | Incremental | | x | |
 | Stateful | | x | |
+| ACID | | | |
+| Time-Travel | | | |
 
 ### Bash
 
@@ -63,6 +66,22 @@ The key ideas are:
 In the Bash Transform script State, Logging, Metrics and Data Quality are removed.
 
 ### dbt
+
+`dbt` provides a nice frontend for `duckdb` allowing to structure our
+transformation code is a sane way and get lineage, documentation, testing, and
+logging with little investment.
+
+With the `dbt-duckdb` extension we get the ability to create external
+materialisations and use external sources. This allows us to use blob storage
+as a database and duckdb as a compute engine.
+
+Unfortunately `dbt-duckdb` does not yet support incremental and snapshot with
+external materialisations, however this seems like a bad idea. As powerful as
+this extension is we are missing nice features like time-travel and ACID. If
+you are making a very simple data pipeline for immutable data, for example log
+aggregation, this would be a cheap and simple approach.
+
+### Iceberg
 
 Placeholder
 

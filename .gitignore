@@ -4,6 +4,8 @@
 *.log
 
 
+
+**/dbt/.user.yml
 **/dbt/include
 **/dbt/bin
 **/dbt/lib

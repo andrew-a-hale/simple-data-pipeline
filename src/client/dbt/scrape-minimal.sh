@@ -117,4 +117,3 @@ get_seasons | jq -r '"\(.id)"' |
 
 # END
 printf "COMPLETED\n"
-

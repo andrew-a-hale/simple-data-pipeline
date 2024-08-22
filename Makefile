@@ -28,7 +28,7 @@ bash-inc:
 
 dbt:
 	DATA_LAKE_DIR=$(DATA_LAKE_DIR) sqlfluff lint src/client/dbt/models
-	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt build 
+	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt build
 
 dbt-docs:
 	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt docs generate && dbt docs serve

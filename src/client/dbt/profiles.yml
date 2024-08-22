@@ -1,0 +1,8 @@
+local:
+  target: local
+  outputs:
+    local:
+      type: duckdb
+      extensions:
+        - httpfs
+        - parquet

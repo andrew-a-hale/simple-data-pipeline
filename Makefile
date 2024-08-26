@@ -1,4 +1,4 @@
-PORT?=8888
+PORT?=8889
 DATA_LAKE_DIR?=../data-lake
 
 default:
@@ -32,3 +32,6 @@ dbt:
 
 dbt-docs:
 	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt docs generate && dbt docs serve
+
+sparkberg:
+	cd src/client/sparkberg && python mgp.py

@@ -3,7 +3,15 @@
 **/logs/**
 *.log
 
-
+**/sparkberg/include
+**/sparkberg/bin
+**/sparkberg/lib
+**/sparkberg/lib64
+**/sparkberg/target
+**/sparkberg/pyvenv.cfg
+**/sparkberg/etc
+**/sparkberg/share
+**/sparkberg/metastore_db
 
 **/dbt/.user.yml
 **/dbt/include

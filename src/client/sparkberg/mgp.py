@@ -1,5 +1,11 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, isnull
+
+## TODO: consider expireSnapshots
+## TODO: consider deleteOrphanFiles
+## TODO: consider rewriteDataFiles
+## TODO: consider rewriteManifests
+## TODO: consider removing hard coding
 
 # taken from https://medium.com/@gmurro/concurrent-writes-on-iceberg-tables-using-pyspark-fd30651b2c97
 spark = (
@@ -18,6 +24,7 @@ spark = (
     )
     .config("spark.sql.catalog.spark_catalog.type", "hadoop")
     .config("spark.sql.catalog.spark_catalog.warehouse", "../data-lake/iceberg")
+    .config("spark.wap.branch", "audit_branch")
     .getOrCreate()
 )
 
@@ -83,11 +90,35 @@ LEFT JOIN silver.sessions ON sessions.id = classifications.session_id"""
     .writeTo("gold.mgp")
     .using("iceberg")
     .tableProperty("write.merge.isolation-level", "snapshot")
+    .tableProperty("write.wap.enabled", "true")
     .createOrReplace()
 )
 
 ## Audit
+class NullCheckError(Exception):
+    def __init__(self):
+        return super().__init__(self)
 
+def check_nulls(session, table, dim):
+    assert dim in ["year", "event", "category", "session"]
+    df = (
+        session.read
+        .option("BRANCH", "audit_branch")
+        .table(table)
+        .filter(isnull(col(dim)))
+    )
+
+    if not df.isEmpty():
+        raise NullCheckError(f"Error: Found Nulls in column {dim}")
+
+dims = ["year", "event", "category", "session"]
+for dim in dims:
+    check_nulls(spark, "gold.mgp", dim)
 
 ## Publish
+spark.sql("call spark_catalog.system.fast_forward('gold.mgp', 'main', 'audit_branch')")
 
+## Cleanup
+spark.conf.unset("spark.wap.branch")
+spark.sql("alter table gold.mgp unset tblproperties ('write.wap.enabled')")
+spark.sql("alter table gold.mgp drop branch 'audit_branch'")

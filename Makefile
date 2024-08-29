@@ -27,6 +27,7 @@ bash-inc:
 	./src/client/bash/scrape.sh 1000
 
 dbt:
+	./src/client/dbt/scrape-minimal.sh
 	DATA_LAKE_DIR=$(DATA_LAKE_DIR) sqlfluff lint src/client/dbt/models
 	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt build
 
@@ -34,4 +35,5 @@ dbt-docs:
 	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt docs generate && dbt docs serve
 
 sparkberg:
+	./src/client/sparkberg/scrape-minimal.sh
 	cd src/client/sparkberg && python mgp.py

@@ -9,9 +9,12 @@ locally as possible but with a clear division between server and client.
 1. Install `duckdb`
 2. Install `go`
 3. Run `make [PORT=<port>]`
-  - If port is missing defaults to 8888.
+  - If port is missing defaults to 8889.
   - To test if the webserver is up use: `curl "localhost:8888/"` in another terminal.
   - If you want to run the dbt variant you will need to install `dbt` and `dbt-duckdb`
+    1. Create a `venv` in the `dbt` folder
+    2. Activate the virtual environment
+    3. Run `make dbt`
   - If you want to run the spark + iceberg variant you will need to do the following:
     1. Create a `venv` in the `sparkberg` folder
     2. Activate the virtual environment

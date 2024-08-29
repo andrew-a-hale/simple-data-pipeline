@@ -37,15 +37,15 @@ Here is the data pipeline scripts that make use of the server live.
 Here is a table of the implemented features in each:
 
 | Feature | Bash Transform | Bash Full | Bash Minimal + dbt | Spark + Iceberg |
-|---------|:------------:|:----:|:---:|
-| Multicore | x | x | x | |
-| Logging | | x | x | |
+|---------|:------------:|:----:|:---:|:--:|
+| Multicore | x | x | x | x |
+| Logging | | x | x | x |
 | Metrics | | x | | |
-| Data Quality | | x | x | |
+| Data Quality | | x | x | x |
 | Incremental | | x | | |
 | Stateful | | x | | |
-| ACID | | | | |
-| Time-Travel | | | | |
+| ACID | | | | x |
+| Time-Travel | | | | x |
 
 ### Bash
 

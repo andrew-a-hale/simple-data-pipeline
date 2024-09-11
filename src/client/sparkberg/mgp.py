@@ -116,4 +116,4 @@ spark.sql("call spark_catalog.system.fast_forward('gold.mgp', 'main', 'audit_bra
 ## Cleanup
 spark.conf.unset("spark.wap.branch")
 spark.sql("alter table gold.mgp unset tblproperties ('write.wap.enabled')")
-spark.sql("alter table gold.mgp drop branch 'audit_branch'")
+spark.sql("alter table gold.mgp drop branch `audit_branch`")

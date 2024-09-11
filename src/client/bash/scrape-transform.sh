@@ -1,10 +1,11 @@
 #!/bin/bash
 cd $(dirname "$0")
+PORT=$1
 
 printf "STARTING PIPELINE\n"
 
 # URL
-export BASE_URL="localhost:8888"
+export BASE_URL="localhost:$PORT"
 
 # DATA LAKE PATHS
 export DATA_LAKE=../data-lake
@@ -104,9 +105,11 @@ export -f get_classification
 
 curl -s $BASE_URL
 while [[ $? -gt 0 ]]; do
+  echo "waiting for webserver..."
   curl -s $BASE_URL
-  sleep 1
+  sleep 5
 done
+echo "webserver is up!"
 
 # BRONZE
 get_seasons | jq -r '"\(.id)"' |

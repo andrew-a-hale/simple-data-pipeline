@@ -1,5 +1,6 @@
 #!/bin/bash
 cd $(dirname "$0")
+PORT=$2
 
 # INPUTS
 if [[ ${#@} -eq 0 ]]; then
@@ -21,7 +22,7 @@ fi
 printf "STARTING $LOAD_TYPE LOAD DOING UPTO $TASK_COUNT TASKS\n"
 
 # URL
-export BASE_URL="localhost:8888"
+export BASE_URL="localhost:$PORT"
 
 # DATA LAKE PATHS
 export START_TIMESTAMP=$(date +%s%N)
@@ -71,7 +72,7 @@ get_seasons() {
     SEASONS=$(head -n 1 <<<$SEASONS)
   fi
 
-  if [[ $(printf "$SEASONS" | wc -l) -eq 0 ]]; then
+  if [[ $(echo "$SEASONS" | wc -l) -eq 0 ]]; then
     printf "$(date --iso-8601=ns) [ERROR] found no seasons\n" >>$LOG_FILE
     exit 1
   fi
@@ -91,7 +92,7 @@ get_events() {
       jq --arg SEASON_ID "$1" -c '.[] | {name: .name, sname: .short_name, id: .id, season_id: $SEASON_ID}'
   )
 
-  if [[ $(printf "$EVENTS" | wc -l) -eq 0 ]]; then
+  if [[ $(echo "$EVENTS" | wc -l) -eq 0 ]]; then
     printf "$(date --iso-8601=ns) [ERROR] found no events for season: $1\n" >>$LOG_FILE
     exit 1
   fi
@@ -112,7 +113,7 @@ get_categories() {
         '.[] | {name: .name, id: .id, season_id: $SEASON_ID, event_id: $EVENT_ID}'
   )
 
-  if [[ $(printf "$CATEGORIES" | wc -l) -eq 0 ]]; then
+  if [[ $(echo "$CATEGORIES" | wc -l) -eq 0 ]]; then
     printf "$(date --iso-8601=ns) [ERROR] found no categories for event: $2\n" >>$LOG_FILE
     exit 1
   fi
@@ -133,7 +134,7 @@ get_sessions() {
         '.[] | {name: .name, id: .id, season_id: $SEASON_ID, event_id: $EVENT_ID, category_id: $CATEGORY_ID}'
   )
 
-  if [[ $(printf "$SESSIONS" | wc -l) -eq 0 ]]; then
+  if [[ $(echo "$SESSIONS" | wc -l) -eq 0 ]]; then
     printf "$(date --iso-8601=ns) [ERROR] found no sessions for event: $2, category: $3\n" >>$LOG_FILE
     exit 1
   fi
@@ -156,7 +157,7 @@ get_classification() {
       jq -r '"\(.season_id),\(.event_id),\(.category_id),\(.session_id),\(.name),\(.number),\(.pos),\(.pts)"'
   )
 
-  if [[ $(printf "$CLASSIFICATION" | wc -l) -lt 0 ]]; then
+  if [[ $(printf "$CLASSIFICATION" | wc -l) -lt 1 ]]; then
     printf "$(date --iso-8601=ns) [ERROR] found no classification data for session: $4\n" >>$LOG_FILE
     exit 1
   fi
@@ -198,7 +199,7 @@ WHERE tasks.id IS NULL;"
 
 get_tasks() {
   START=$(date +%s%N)
-  duckdb -csv $QUEUE_DB "SELECT season_id, event_id, category_id, session_id FROM tasks WHERE status < $COMPLETED_STATUS LIMIT $1;"
+  duckdb -csv -noheader $QUEUE_DB "SELECT season_id, event_id, category_id, session_id FROM tasks WHERE status < $COMPLETED_STATUS LIMIT $1;"
 
   DURATION=$((($(date +%s%N) - START) / 1000000))
   jq -cn --arg DURATION "$DURATION" '{"event": "GET_TASKS", "duration_ms": $DURATION | tonumber}' >>$METRIC_FILE
@@ -271,9 +272,11 @@ export -f get_classification
 
 curl -s $BASE_URL
 while [[ $? -gt 0 ]]; do
+  echo "waiting for webserver..."
   curl -s $BASE_URL
-  sleep 1
+  sleep 5
 done
+echo "webserver is up!"
 
 # START PROCESS TIMER
 OVERALL_START=$(date +%s%N)
@@ -376,4 +379,3 @@ printf "COMPLETED\n"
 [ -e $METRIC_FILE ] && mv $METRIC_FILE $METRIC_ARCHIVE
 [ -e $DQ_FILE ] && mv $DQ_FILE $DQ_ARCHIVE
 rm bad-* $TASK_FILE
-

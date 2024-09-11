@@ -12,6 +12,7 @@
 **/sparkberg/etc
 **/sparkberg/share
 **/sparkberg/metastore_db
+**/sparkberg/spark-warehouse
 
 **/dbt/.user.yml
 **/dbt/include

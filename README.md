@@ -1,11 +1,12 @@
 # A Simple Data Pipeline
 
 This project is simple mostly self-contained data pipeline with source (server)
-and destination (client). This is a test-bed for testing data related tooling as
-locally as possible but with a clear division between server and client.
+and destination (client). This is a test-bed for testing data related tooling
+as locally as possible but with a clear division between server and client.
 
 ## Getting Started
 
+0. Be in a unix-like environment
 1. Install `duckdb`
 2. Install `go`
 3. Run `make [PORT=<port>]`
@@ -32,7 +33,7 @@ parquet format.
 
 ## Client
 
-Here is the data pipeline scripts that make use of the server live.
+In the client folder are the data pipeline scripts that make use of the server.
 
 Here is a table of the implemented features in each:
 
@@ -72,6 +73,12 @@ The key ideas are:
 
 In the Bash Transform script State, Logging, Metrics and Data Quality are removed.
 
+#### Data Storage
+
+The data is stored as files intended for cheap blob storage and massively
+parallel compute, instead of highly optimised file formats with index
+maintenance used by tradition databases.[^1]
+
 ### dbt
 
 `dbt` provides a nice frontend for `duckdb` allowing to structure our
@@ -90,13 +97,15 @@ aggregation, this would be a cheap and simple approach.
 
 ### Iceberg
 
-Placeholder
+Iceberg has been a technology that has interested me for a long time. It
+appears to be the most feature complete way to Tables in Blob Storage. It gives
+is ACID-compliant, has time-travel, and easily allow for a Write-Audit-Publish
+(WAP) pattern.
 
-#### Data Storage
+The WAP pattern is simple because Iceberg supports git-like branchs and
+switching a branch is a metadata operation. Otherwise it feels like regular
+spark.
 
-The data is stored as files intended for cheap blob storage and massively
-parallel compute, instead of highly optimised file formats with index
-maintenance.[^1]
 
 [^1]: In recent years there has been a move to separate the databases into 3
 separate components; Storage, Compute, and Catalog.

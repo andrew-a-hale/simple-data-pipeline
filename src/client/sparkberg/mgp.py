@@ -8,15 +8,16 @@ from pyspark.sql.functions import col, isnull
 
 TYPES = ["seasons", "events", "categories", "sessions", "classifications"]
 
+
 class NullCheckError(Exception):
     def __init__(self):
         return super().__init__(self)
 
+
 def check_nulls(session, table, dim):
     assert dim in ["year", "event", "category", "session"]
     df = (
-        session.read
-        .option("BRANCH", "audit_branch")
+        session.read.option("BRANCH", "audit_branch")
         .table(table)
         .filter(isnull(col(dim)))
     )
@@ -24,14 +25,15 @@ def check_nulls(session, table, dim):
     if not df.isEmpty():
         raise NullCheckError(f"Error: Found Nulls in column {dim}")
 
+
 def read_bronze_layer(session, type):
     assert type in TYPES
     return (
-        session.read
-        .option("header", True)
+        session.read.option("header", True)
         .option("recursiveFileLookup", True)
-        .csv(f"../data-lake/bronze/{type}/") 
+        .csv(f"../data-lake/bronze/{type}/")
     )
+
 
 def write_to_silver_layer(session, df, type):
     assert type in TYPES
@@ -42,8 +44,10 @@ def write_to_silver_layer(session, df, type):
         .createOrReplace()
     )
 
+
 def move_from_bronze_to_silver(spark, type):
     write_to_silver_layer(spark, read_bronze_layer(spark, type), type)
+
 
 def write_to_gold_layer(spark):
     (
@@ -62,14 +66,14 @@ def write_to_gold_layer(spark):
     LEFT JOIN silver.seasons ON seasons.id = classifications.season_id
     LEFT JOIN silver.events ON events.id = classifications.event_id
     LEFT JOIN silver.categories ON categories.id = classifications.category_id AND categories.event_id = classifications.event_id
-    LEFT JOIN silver.sessions ON sessions.id = classifications.session_id"""
-        )
+    LEFT JOIN silver.sessions ON sessions.id = classifications.session_id""")
         .writeTo("gold.mgp")
         .using("iceberg")
         .tableProperty("write.merge.isolation-level", "snapshot")
         .tableProperty("write.wap.enabled", "true")
         .createOrReplace()
     )
+
 
 # taken from https://medium.com/@gmurro/concurrent-writes-on-iceberg-tables-using-pyspark-fd30651b2c97
 spark = (
@@ -83,9 +87,7 @@ spark = (
         "spark.sql.extensions",
         "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions",
     )
-    .config(
-        "spark.sql.catalog.spark_catalog", "org.apache.iceberg.spark.SparkCatalog"
-    )
+    .config("spark.sql.catalog.spark_catalog", "org.apache.iceberg.spark.SparkCatalog")
     .config("spark.sql.catalog.spark_catalog.type", "hadoop")
     .config("spark.sql.catalog.spark_catalog.warehouse", "../data-lake/iceberg")
     .config("spark.wap.branch", "audit_branch")

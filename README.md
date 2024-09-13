@@ -6,21 +6,32 @@ as locally as possible but with a clear division between server and client.
 
 ## Getting Started
 
+### Local
 0. Be in a unix-like environment
 1. Install `duckdb`
 2. Install `go`
-3. Run `make [PORT=<port>]`
-  - If port is missing defaults to 8889.
-  - To test if the webserver is up use: `curl "localhost:8888/"` in another terminal.
-  - If you want to run the dbt variant you will need to install `dbt` and `dbt-duckdb`
-    1. Create a `venv` in the `dbt` folder
-    2. Activate the virtual environment
-    3. Run `make dbt`
-  - If you want to run the spark + iceberg variant you will need to do the following:
-    1. Create a `venv` in the `sparkberg` folder
-    2. Activate the virtual environment
-    3. Run `make sparkberg`
-4. Run `make kill-ws` to kill background webserver kill you are done
+3. Run `make build`
+
+### Docker
+1. Run `docker build . -t dev`
+2. Run `docker run dev`
+3. Open another terminal and run `docker exec -it <container_id> /bin/bash`
+    - Run `docker ps` to get the `<container_id>`
+
+4. Run `make [PORT=<port>]`
+    - If port is missing defaults to 8889.
+    - To test if the webserver is up use: `curl "localhost:8888/"` in another terminal.
+    - If you want to run the dbt variant you will need to
+        1. Install `python` and then pip install `dbt` and `dbt-duckdb`
+        2. Create a `venv` in the `dbt` folder
+        3. Activate the virtual environment
+        4. Run `make dbt`
+    - If you want to run the spark + iceberg variant you will need to do the following:
+        1. Install `python` and then pip install `dbt` and `dbt-duckdb`
+        2. Create a `venv` in the `sparkberg` folder
+        3. Activate the virtual environment
+        4. Run `make sparkberg`
+5. Run `make kill-ws` to kill background webserver kill you are done
 
 There are a few other commands in the Makefile to simplify testing.
 

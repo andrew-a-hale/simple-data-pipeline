@@ -3,12 +3,16 @@ DATA_LAKE_DIR?=../data-lake
 
 default:
 	./src/server/kill-ws.sh $(PORT) > /dev/null || true
-	DB_PATH=data.db PORT=$(PORT) go run -C ./src/server/ router.go &
+	DB_PATH=./src/server/data.db PORT=$(PORT) ./src/server/router &
 	./src/client/bash/scrape-transform.sh $(PORT)
 
 webserver:
 	./src/server/kill-ws.sh $(PORT) > /dev/null || true
-	DB_PATH=data.db PORT=$(PORT) go run -C ./src/server/ router.go &
+	DB_PATH=./src/server/data.db PORT=$(PORT) ./src/server/router &
+	./src/server/keep-alive.sh
+
+build:
+	go build -C ./src/server router.go ;
 
 kill-ws:
 	./src/server/kill-ws.sh $(PORT)

@@ -1,13 +1,3 @@
-# Thoughts
-
-- Starting data projects is hard
-  - They too small or too big
-  - A lot of the time the tools we use cost money
-- Should I do a certification or a project?
-  - Is Data Engineering fun?
-  - For Employability?
-- What is fun?
-
 ## Post
 
 Trying new data engineering tools can be difficult because we need a problem to
@@ -17,4 +7,4 @@ either too small and not interesting or too large and don't get completed.
 But we do need to invent some toy-problems to experiment with new
 technologies... So this is my reusable toy-problem that runs entirely locally.
 
-Here is a link to the github repo: [link]
+Here is a link to the github repo: https://github.com/andrew-a-hale/simple-data-pipeline

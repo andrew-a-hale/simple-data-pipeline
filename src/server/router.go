@@ -32,8 +32,8 @@ func newConnection() *duckdb.Connector {
 }
 
 type season struct {
-	Year int    `json:"year"`
 	Id   string `json:"id"`
+	Year int    `json:"year"`
 }
 
 func getSeasons(logger *slog.Logger, w http.ResponseWriter, r *http.Request) {
@@ -221,14 +221,14 @@ func getSessions(logger *slog.Logger, w http.ResponseWriter, r *http.Request) {
 }
 
 type classification struct {
-	Name       string   `json:"name"`
-	Number     null.Int `json:"number"`
-	Position   null.Int `json:"position"`
-	Points     int      `json:"points"`
 	SeasonId   string   `json:"season_id"`
 	EventId    string   `json:"event_id"`
 	CategoryId string   `json:"category_id"`
 	SessionId  string   `json:"session_id"`
+	Name       string   `json:"name"`
+	Number     null.Int `json:"number"`
+	Position   null.Int `json:"position"`
+	Points     int      `json:"points"`
 }
 
 func getClassification(logger *slog.Logger, w http.ResponseWriter, r *http.Request) {
@@ -322,6 +322,7 @@ func main() {
 	logger := slog.New(handler)
 
 	logger.Info("Webserver Started @ Port: " + port)
+	logger.Info("Database: " + os.Getenv("DB_PATH"))
 	defer logger.Info("Webserver Ended!")
 
 	mux := http.NewServeMux()

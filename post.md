@@ -10,12 +10,11 @@
 
 ## Post
 
-Trying new data engineering tools can be difficult because they are either too
-small and not interesting or too large and don't get completed. The
-satisifaction out of data engineering comes from solving business problems in
-complex environments and spending time on toy-problems loses interest fast.
+Trying new data engineering tools can be difficult because we need a problem to
+apply them to. Finding a problem of the right size is difficult - they can be
+either too small and not interesting or too large and don't get completed.
 
-But we do need to invent some toy-problems to learn and play with new
+But we do need to invent some toy-problems to experiment with new
 technologies... So this is my reusable toy-problem that runs entirely locally.
 
 Here is a link to the github repo: [link]

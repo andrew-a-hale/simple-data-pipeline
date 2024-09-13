@@ -26,10 +26,10 @@ There are a few other commands in the Makefile to simplify testing.
 
 ## Server
 
-The Server loosely emulates the MOTOGP API and is seeded by parquet files
-directly from a public github repo. These files are quite small since this is
-just a small subset of the results data and then is heavily compressed by the
-parquet format.
+The Server loosely emulates the MOTOGP API. These
+files are quite small since this is just a small
+subset of the results data and then is heavily
+compressed by the parquet format.
 
 ## Client
 

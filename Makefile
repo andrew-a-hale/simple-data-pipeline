@@ -2,13 +2,9 @@ PORT?=8889
 DATA_LAKE_DIR?=../data-lake
 
 default:
-	./src/server/seed.sh
 	./src/server/kill-ws.sh $(PORT) > /dev/null || true
 	DB_PATH=data.db PORT=$(PORT) go run -C ./src/server/ router.go &
 	./src/client/bash/scrape-transform.sh $(PORT)
-
-seed:
-	./src/server/seed.sh
 
 webserver:
 	./src/server/kill-ws.sh $(PORT) > /dev/null || true
@@ -35,7 +31,7 @@ dbt-docs:
 	cd src/client/dbt && DATA_LAKE_DIR=$(DATA_LAKE_DIR) dbt docs generate && dbt docs serve
 
 sparkberg:
-	# ./src/client/sparkberg/scrape-minimal.sh $(PORT)
+	./src/client/sparkberg/scrape-minimal.sh $(PORT)
 	cd src/client/sparkberg && python mgp.py
 
 nuke:
